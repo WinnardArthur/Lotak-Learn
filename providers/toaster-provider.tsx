@@ -1,10 +1,8 @@
-'use client'
+"use client";
 
-import React from 'react';
-import {Toaster} from 'react-hot-toast';
+import React from "react";
+import { Toaster } from "react-hot-toast";
 
 export const ToasterProvider = () => {
-  return (
-    <div>ToasterProvider</div>
-  )
-}
+  return <Toaster />;
+};
