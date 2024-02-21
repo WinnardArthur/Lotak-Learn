@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import * as z from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import MuxPlayer from "@mux/mux-player-react";
 
 import { Button } from "@/components/ui/button";
 import { Pencil, PlusCircle, VideoIcon } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { Chapter, MuxData } from "@prisma/client";
-import Image from "next/image";
 import { FileUpload } from "@/components/file-upload";
 
 const formSchema = z.object({
@@ -74,7 +74,12 @@ export const ChapterVideoForm = ({
             <VideoIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative aspect-video mt-2">Video player</div>
+          <div className="relative aspect-video mt-2 max-h-[400px]">
+            <MuxPlayer
+              playbackId={initialData?.muxData?.playbackId || ""}
+              className="h-full"
+            />
+          </div>
         ))}
 
       {isEditing && (
