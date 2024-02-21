@@ -60,6 +60,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
   };
 
+  // Reorder function
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
@@ -74,6 +75,11 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  // Edit Chapter function
+  const onEdit = (id: string) => {
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
   };
 
   return (
@@ -139,7 +145,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
           >
             {!initialData.chapters.length && "No chapters"}
             <ChaptersList
-              onEdit={() => {}}
+              onEdit={onEdit}
               onReorder={onReorder}
               items={initialData.chapters || []}
             />
