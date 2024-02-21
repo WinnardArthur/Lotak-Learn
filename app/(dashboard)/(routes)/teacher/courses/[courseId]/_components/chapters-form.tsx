@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { Chapter, Course } from "@prisma/client";
+import toast from "react-hot-toast";
 
 import {
   Form,
@@ -16,10 +18,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Pencil, PlusCircle } from "lucide-react";
-import toast from "react-hot-toast";
+import { Loader2, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Chapter, Course } from "@prisma/client";
+import { ChaptersList } from "./chapters-list";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -52,14 +53,36 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       await axios.post(`/api/courses/${courseId}/chapters`, values);
       toast.success("Chapter created");
       toggleCreating();
+      form.reset();
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
 
+  const onReorder = async (updateData: { id: string; position: number }[]) => {
+    try {
+      setIsUpdating(true);
+
+      await axios.patch(`/api/courses/${courseId}/chapters/reorder`, {
+        list: updateData,
+      });
+      toast.success("Chapters reordered");
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+      {isUpdating && (
+        <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-md flex items-center justify-center">
+          <Loader2 className="h-6 w-6 text-sky-700 animate-spin" />
+        </div>
+      )}
       <div className="font-medium flex items-center justify-between">
         Course chapters
         <Button variant="ghost" onClick={toggleCreating}>
@@ -115,7 +138,11 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
             )}
           >
             {!initialData.chapters.length && "No chapters"}
-            {/* Add Chapters */}
+            <ChaptersList
+              onEdit={() => {}}
+              onReorder={onReorder}
+              items={initialData.chapters || []}
+            />
           </div>
           <p className="text-xs text-muted-foreground mt-4">
             Drag and drop to reorder the chapters
