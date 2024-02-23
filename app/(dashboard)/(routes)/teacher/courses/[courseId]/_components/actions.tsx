@@ -1,12 +1,14 @@
 "use client";
 
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import axios from "axios";
+
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 import { Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 interface ActionsProps {
   disabled: boolean;
@@ -15,6 +17,7 @@ interface ActionsProps {
 }
 
 export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
+  const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -29,6 +32,7 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
       } else {
         await axios.patch(`/api/courses/${courseId}/publish`);
         toast.success("Course published");
+        confetti.onOpen();
       }
     } catch (error) {
       toast.error("Something went wrong");

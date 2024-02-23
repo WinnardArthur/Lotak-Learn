@@ -39,7 +39,7 @@ export async function PATCH(
         courseId: params.courseId,
         isPublished: true,
       },
-    });
+    }); 
 
     if (!publishedChaptersInCourse.length) {
       await db.course.update({
