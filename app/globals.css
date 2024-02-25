@@ -79,6 +79,18 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+
+  .small-horizontal-scrollbar::-webkit-scrollbar {
+    @apply h-1 sm:h-2 !important
+  }
+
+.small-horizontal-scrollbar::-webkit-scrollbar-track {
+    @apply h-1 sm:h-2 !important
+  }
+
+  .small-horizontal-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300/70 rounded-full
+  }
 }
 
 .ql-container {
