@@ -44,6 +44,8 @@ const CreatePage = () => {
       toast.success("Course created");
     } catch {
       toast.error("Something went wrong");
+    } finally {
+      router.refresh();
     }
   };
 
