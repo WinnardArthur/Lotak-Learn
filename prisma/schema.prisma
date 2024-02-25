@@ -20,7 +20,7 @@ model Course {
   isPublished Boolean @default(false)
 
   categoryId String?   @db.ObjectId
-  cateogry   Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
 
   chapters Chapter[]
 
