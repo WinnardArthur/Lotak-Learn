@@ -5,7 +5,7 @@ import Link from "next/link";
 const Logo = () => {
   return (
     <Link href="/" className="flex items-center space-x-2">
-      <Image src="/logo.png" height={52} width={52} alt="logo" />
+      <Image src="/assets/images/logo.png" height={50} width={50} alt="logo" />
       <h3 className="font-extrabold text-xl">Lotak Learn</h3>
     </Link>
   );
